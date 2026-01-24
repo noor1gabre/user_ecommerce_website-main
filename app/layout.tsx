@@ -13,24 +13,23 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Family & Home - Modern Furniture & Home Decor",
-  description: "Discover beautiful and cozy furniture for your home. Premium quality, affordable prices.",
-  generator: "v0.app",
+  description:
+    "Discover carefully curated furniture and home decor that brings comfort, style, and elegance to every corner of your home.",
+  keywords: ["furniture", "home decor", "comfort", "style", "elegance", "family", "home", "modern furniture"],
+  openGraph: {
+    title: "Family & Home - Modern Furniture & Home Decor",
+    description:
+      "Discover carefully curated furniture and home decor that brings comfort, style, and elegance to every corner of your home.",
+    type: "website",
+    siteName: "Family & Home",
+    locale: "en_US",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
+    icon: "/family_home_logo.ico",
   },
 }
 
