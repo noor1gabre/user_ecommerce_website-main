@@ -70,21 +70,56 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <Link href="#products">
-                <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-6 text-lg rounded-full font-semibold flex items-center gap-2 transition-all duration-300 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1">
+              <Link href="/shop">
+                <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-7 text-xl rounded-full font-bold flex items-center gap-3 transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/40 hover:-translate-y-1">
                   Shop Now
-                  <ArrowRight size={20} />
-                </Button>
-              </Link>
-              <Link href="#products">
-                <Button
-                  variant="outline"
-                  className="px-8 py-6 text-lg rounded-full font-semibold border-2 border-primary/30 hover:border-primary hover:bg-primary/5 transition-all duration-300 bg-background/50 backdrop-blur-sm hover:-translate-y-1"
-                >
-                  Explore Collections
+                  <ArrowRight size={24} />
                 </Button>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Categories - Visual Attraction */}
+      <section className="py-10 px-4 -mt-10 relative z-20">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Link href="/shop" className="group relative h-64 rounded-2xl overflow-hidden shadow-xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary/40 mix-blend-multiply z-10 transition-opacity duration-300 group-hover:opacity-90" />
+              <img src="/modern-furniture-showroom.png" alt="Living Room" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-white p-4 text-center">
+                <h3 className="text-2xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">Living Room</h3>
+                <span className="px-4 py-2 border border-white/30 rounded-full text-sm font-medium backdrop-blur-md bg-white/10 transform translate-y-8 opacity-0 transition-all duration-500 delay-100 group-hover:translate-y-0 group-hover:opacity-100">Explore Collection</span>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <h3 className="text-2xl font-bold text-white group-hover:opacity-0 transition-opacity duration-300">Living Room</h3>
+              </div>
+            </Link>
+
+            <Link href="/shop" className="group relative h-64 rounded-2xl overflow-hidden shadow-xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary/80 to-secondary/40 mix-blend-multiply z-10 transition-opacity duration-300 group-hover:opacity-90" />
+              <img src="/hero.webp" alt="Bedroom" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-white p-4 text-center">
+                <h3 className="text-2xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">Bedroom</h3>
+                <span className="px-4 py-2 border border-white/30 rounded-full text-sm font-medium backdrop-blur-md bg-white/10 transform translate-y-8 opacity-0 transition-all duration-500 delay-100 group-hover:translate-y-0 group-hover:opacity-100">Explore Collection</span>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <h3 className="text-2xl font-bold text-white group-hover:opacity-0 transition-opacity duration-300">Bedroom</h3>
+              </div>
+            </Link>
+
+            <Link href="/shop" className="group relative h-64 rounded-2xl overflow-hidden shadow-xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-800/80 to-slate-600/40 mix-blend-multiply z-10 transition-opacity duration-300 group-hover:opacity-90" />
+              <img src="/placeholder.jpg" alt="Home Office" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-white p-4 text-center">
+                <h3 className="text-2xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">Home Office</h3>
+                <span className="px-4 py-2 border border-white/30 rounded-full text-sm font-medium backdrop-blur-md bg-white/10 transform translate-y-8 opacity-0 transition-all duration-500 delay-100 group-hover:translate-y-0 group-hover:opacity-100">Explore Collection</span>
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <h3 className="text-2xl font-bold text-white group-hover:opacity-0 transition-opacity duration-300">Home Office</h3>
+              </div>
+            </Link>
           </div>
         </div>
       </section>

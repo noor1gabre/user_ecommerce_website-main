@@ -3,13 +3,15 @@
 import Link from "next/link"
 import { ShoppingCart, User, Menu, X, ChevronDown, Package } from "lucide-react"
 import { useCart } from "@/context/cart-context"
+import { useAuth } from "@/context/auth-context"
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 
 export default function Navbar() {
   const { items } = useCart()
+  const { isLoggedIn, logout } = useAuth()
   const router = useRouter()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  // const [isLoggedIn, setIsLoggedIn] = useState(false) // Removed local state
   const [isHydrated, setIsHydrated] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
@@ -36,17 +38,18 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem("access_token"))
+    // setIsLoggedIn(!!localStorage.getItem("access_token")) // Removed manual check
     setIsHydrated(true)
   }, [])
 
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token")
-    setIsLoggedIn(false)
+    // localStorage.removeItem("access_token") // Handled by context
+    // setIsLoggedIn(false) // Handled by context
+    logout()
     setIsProfileDropdownOpen(false)
-    router.push("/")
+    // router.push("/") // Handled by context
   }
 
   return (
