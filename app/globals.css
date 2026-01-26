@@ -5,7 +5,7 @@
 
 :root {
   /* Premium Teal & Coral Color System */
-  --background: 0 0% 99%;
+  --background: 50 24% 95%;
   --foreground: 170 20% 18%;
   --card: 0 0% 100%;
   --card-foreground: 170 20% 18%;
@@ -120,6 +120,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -131,6 +132,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -142,6 +144,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -149,10 +152,12 @@
 }
 
 @keyframes shimmer {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.7;
   }
@@ -163,6 +168,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

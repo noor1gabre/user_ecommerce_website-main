@@ -60,12 +60,13 @@ export default function Navbar() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="group flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/70 rounded-lg flex items-center justify-center">
+            {/* <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/70 rounded-lg flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-lg">F</span>
-            </div>
+            </div> 
             <span className="text-2xl font-bold bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
               Family & Home
-            </span>
+            </span> */}
+            <img src="/logo_fam.webp" alt="Family & Home" className="h-12 w-auto object-contain transition-opacity group-hover:opacity-90" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
