@@ -52,7 +52,7 @@ export default function CartPage() {
                   )}
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
-                    <p className="text-primary font-bold text-lg mb-4">${item.price.toFixed(2)}</p>
+                    <p className="text-primary font-bold text-lg mb-4">R {item.price.toFixed(2)}</p>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center border border-border rounded">
                         <button
@@ -89,12 +89,12 @@ export default function CartPage() {
           <div className="space-y-4 mb-6">
             <div className="flex justify-between text-foreground">
               <span>Subtotal</span>
-              <span>${total.toFixed(2)}</span>
+              <span>R {total.toFixed(2)}</span>
             </div>
             <div className="border-t border-border pt-4">
               <div className="flex justify-between text-lg font-bold text-primary">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>R {total.toFixed(2)}</span>
               </div>
             </div>
           </div>

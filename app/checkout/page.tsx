@@ -185,14 +185,14 @@ export default function CheckoutPage() {
                 <span className="text-foreground">
                   {item.name} x{item.quantity}
                 </span>
-                <span className="font-medium text-foreground">${(item.price * item.quantity).toFixed(2)}</span>
+                <span className="font-medium text-foreground">R {(item.price * item.quantity).toFixed(2)}</span>
               </div>
             ))}
           </div>
           <div className="border-t border-border pt-4">
             <div className="flex justify-between text-lg font-bold text-primary">
               <span>Total</span>
-              <span>${total.toFixed(2)}</span>
+              <span>R {total.toFixed(2)}</span>
             </div>
           </div>
         </div>

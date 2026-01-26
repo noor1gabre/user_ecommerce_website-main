@@ -109,7 +109,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
           <div className="flex items-baseline justify-between gap-2 mb-6 mt-auto">
             <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              ${product.price.toFixed(2)}
+              R {product.price.toFixed(2)}
             </span>
             <span className="text-xs text-muted-foreground">incl. taxes</span>
           </div>
@@ -125,8 +125,8 @@ export default function ProductCard({ product }: { product: Product }) {
             <button
               onClick={() => setIsWishlisted(!isWishlisted)}
               className={`p-3 rounded-lg border transition-all duration-300 ${isWishlisted
-                  ? "bg-secondary/10 border-secondary text-secondary"
-                  : "border-border/40 text-foreground/50 hover:border-secondary/30 hover:text-secondary"
+                ? "bg-secondary/10 border-secondary text-secondary"
+                : "border-border/40 text-foreground/50 hover:border-secondary/30 hover:text-secondary"
                 }`}
             >
               <Heart size={18} fill={isWishlisted ? "currentColor" : "none"} />

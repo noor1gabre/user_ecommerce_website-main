@@ -124,8 +124,8 @@ export default function ShopPage() {
                   className="w-full accent-secondary"
                 />
                 <div className="flex justify-between items-center mt-4 text-sm">
-                  <span className="text-muted-foreground">${priceRange[0].toLocaleString()}</span>
-                  <span className="text-secondary font-bold">${priceRange[1].toLocaleString()}</span>
+                  <span className="text-muted-foreground">R {priceRange[0].toLocaleString()}</span>
+                  <span className="text-secondary font-bold">R {priceRange[1].toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -236,7 +236,7 @@ export default function ShopPage() {
                                     </p>
                                   </div>
                                   <div className="text-lg font-bold text-secondary">
-                                    ${product.price.toLocaleString()}
+                                    R {product.price.toLocaleString()}
                                   </div>
                                 </div>
                               </div>

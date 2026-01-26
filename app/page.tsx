@@ -133,7 +133,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="font-bold text-lg text-foreground mb-1">Free Shipping</p>
-                <p className="text-foreground/60">On orders over $100</p>
+                <p className="text-foreground/60">On orders over R 100</p>
               </div>
             </div>
             <div className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:bg-primary/5 hover:shadow-lg hover:-translate-y-1 cursor-default">

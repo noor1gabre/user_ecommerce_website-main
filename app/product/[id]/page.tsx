@@ -7,7 +7,7 @@ import { ArrowLeft, Minus, Plus, ShoppingCart, Loader2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { api, type Product } from "@/lib/api"
-import { cn } from "@/lib/utils" 
+import { cn } from "@/lib/utils"
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Fix for Next.js 15: Unwrap params using 'use'
@@ -80,8 +80,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       {/* Breadcrumb Navigation */}
       <nav className="mb-8">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-medium text-sm"
         >
           <ArrowLeft size={18} />
@@ -90,7 +90,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-16">
-        
+
         {/* Left Column: Image Gallery */}
         <div className="space-y-6">
           <div className="relative aspect-square w-full bg-muted rounded-2xl overflow-hidden border border-border shadow-sm">
@@ -112,16 +112,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   onClick={() => setActiveImageIndex(index)}
                   className={cn(
                     "relative aspect-square w-full rounded-lg overflow-hidden border-2 transition-all",
-                    index === activeImageIndex 
-                      ? "border-primary ring-2 ring-primary/20" 
+                    index === activeImageIndex
+                      ? "border-primary ring-2 ring-primary/20"
                       : "border-transparent hover:border-border"
                   )}
                 >
-                  <Image 
-                    src={url || "/placeholder.svg"} 
-                    alt={`${product.name} view ${index + 1}`} 
-                    fill 
-                    className="object-cover" 
+                  <Image
+                    src={url || "/placeholder.svg"}
+                    alt={`${product.name} view ${index + 1}`}
+                    fill
+                    className="object-cover"
                   />
                 </button>
               ))}
@@ -131,7 +131,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
         {/* Right Column: Product Details (Sticky on Desktop) */}
         <div className="flex flex-col h-fit lg:sticky lg:top-24">
-          
+
           {/* Header Section */}
           <div className="mb-6">
             <span className="inline-block px-3 py-1 rounded-full bg-muted text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
@@ -142,7 +142,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </h1>
             <div className="flex items-baseline gap-4">
               <p className="text-3xl font-bold text-secondary">
-                ${product.price.toFixed(2)}
+                R {product.price.toFixed(2)}
               </p>
               {/* Optional: Add comparison price logic here if needed */}
             </div>
@@ -162,21 +162,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
           {/* Actions Section */}
           <div className="mt-auto space-y-6 bg-muted/30 p-6 rounded-xl border border-border/50">
-            
+
             {/* Quantity Selector */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <span className="text-foreground font-medium">Quantity</span>
               <div className="flex items-center bg-background border border-border rounded-lg shadow-sm">
-                <button 
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))} 
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="p-3 text-muted-foreground hover:text-primary hover:bg-muted rounded-l-lg transition-colors"
                   disabled={quantity <= 1}
                 >
                   <Minus size={16} />
                 </button>
                 <span className="w-12 text-center font-semibold text-lg">{quantity}</span>
-                <button 
-                  onClick={() => setQuantity(quantity + 1)} 
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
                   className="p-3 text-muted-foreground hover:text-primary hover:bg-muted rounded-r-lg transition-colors"
                 >
                   <Plus size={16} />
@@ -185,16 +185,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
 
             {/* Add to Cart Button */}
-            <Button 
-              onClick={handleAddToCart} 
+            <Button
+              onClick={handleAddToCart}
               className="coral-accent w-full py-7 text-lg font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-3"
             >
               <ShoppingCart size={20} />
-              Add to Cart — ${(product.price * quantity).toFixed(2)}
+              Add to Cart — R {(product.price * quantity).toFixed(2)}
             </Button>
-            
+
             <p className="text-xs text-center text-muted-foreground">
-              Free shipping on orders over $50 • 30-day return policy
+              Free shipping on orders over R 50 • 30-day return policy
             </p>
           </div>
         </div>
