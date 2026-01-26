@@ -52,24 +52,24 @@ export default function Home() {
         </div>
 
         <div className="container mx-auto relative z-10 px-4">
-          <div className="max-w-4xl mx-auto text-center animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/30 mb-8 backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/30 mb-8 backdrop-blur-sm animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
               <Sparkles size={16} className="text-secondary" />
               <span className="text-sm font-semibold text-secondary">Discover Premium Quality</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 text-foreground drop-shadow-sm">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 text-foreground drop-shadow-sm animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
               <span className="bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent">
                 Transform Your Space
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-foreground/80 mb-10 leading-relaxed max-w-2xl mx-auto font-medium">
+            <p className="text-xl md:text-2xl text-foreground/80 mb-10 leading-relaxed max-w-2xl mx-auto font-medium animate-fade-in-up" style={{ animationDelay: "0.5s" }}>
               Discover carefully curated furniture and home decor that brings comfort, style, and elegance to every
               corner of your home.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: "0.7s" }}>
               <Link href="/shop">
                 <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-7 text-xl rounded-full font-bold flex items-center gap-3 transition-all duration-300 hover:shadow-2xl hover:shadow-secondary/40 hover:-translate-y-1">
                   Shop Now

@@ -66,7 +66,7 @@ export default function Navbar() {
             <span className="text-2xl font-bold bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
               Family & Home
             </span> */}
-            <img src="/logo_fam.webp" alt="Family & Home" className="h-12 w-auto object-contain transition-opacity group-hover:opacity-90" />
+            <img src="/logo_fam.webp" alt="Family & Home" className="h-20 w-auto object-contain transition-opacity group-hover:opacity-90" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
