@@ -158,16 +158,27 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="products" className="py-20 md:py-32 px-4 container mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Our Premium Collection</h2>
-          <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
-            Hand-picked pieces that combine elegance, comfort, and timeless design.
+      <section id="products" className="py-20 md:py-32 px-4 container mx-auto relative">
+        {/* Decorative background element */}
+        <div className="absolute top-40 left-1/2 -translate-x-1/2 w-[200%] h-96 bg-secondary/5 blur-[100px] -z-10 rounded-[100%]" />
+
+        <div className="text-center mb-20 relative z-10">
+          <div className="inline-block mb-4 animate-in fade-in zoom-in duration-700 delay-100 fill-mode-both">
+            <span className="px-4 py-1.5 rounded-full text-xs font-bold tracking-wider text-secondary uppercase bg-secondary/10 border border-secondary/20">
+              Curated for you
+            </span>
+          </div>
+          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6 tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200 fill-mode-both">
+            Our Premium Collection
+          </h2>
+          <div className="w-24 h-1.5 bg-gradient-to-r from-primary via-secondary to-primary rounded-full mx-auto mb-8 animate-in expand-w duration-1000 delay-300 fill-mode-both" />
+          <p className="text-lg md:text-xl text-foreground/60 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-400 fill-mode-both">
+            Hand-picked pieces that combine elegance, comfort, and timeless design to elevate your living space.
           </p>
         </div>
 
         {loading && (
-          <div className="flex justify-center items-center py-20">
+          <div className="flex justify-center items-center py-20 min-h-[400px]">
             <div className="flex gap-2">
               <div className="w-4 h-4 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
               <div className="w-4 h-4 bg-secondary rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
@@ -177,13 +188,15 @@ export default function Home() {
         )}
 
         {error && (
-          <div className="text-center py-12 rounded-xl bg-destructive/10 border border-destructive/20 p-6">
-            <p className="text-destructive font-semibold">{error}</p>
+          <div className="text-center py-12 rounded-xl bg-destructive/5 border border-destructive/20 p-6 max-w-lg mx-auto">
+            <p className="text-destructive font-semibold flex items-center justify-center gap-2">
+              <span className="text-2xl">⚠️</span> {error}
+            </p>
           </div>
         )}
 
         {!loading && products.length > 0 && (
-          <div className="space-y-16">
+          <div className="space-y-20">
             {Object.entries(
               products.reduce((acc, product) => {
                 const category = product.category || "Uncategorized";
@@ -192,18 +205,31 @@ export default function Home() {
                 return acc;
               }, {} as Record<string, Product[]>)
             ).sort((a, b) => a[0].localeCompare(b[0])) // Sort categories alphabetically
-              .map(([category, categoryProducts]) => (
-                <div key={category} className="space-y-6">
-                  <div className="flex items-center justify-between border-b pb-4 mb-6">
-                    <h3 className="text-3xl font-bold text-foreground">{category}</h3>
-                    <Link href={`/shop?category=${category}`} className="text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors">
-                      See all <ArrowRight size={16} />
+              .map(([category, categoryProducts], categoryIndex) => (
+                <div
+                  key={category}
+                  className="space-y-8 p-6 md:p-8 rounded-3xl bg-background/50 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all duration-500 hover:bg-background/80"
+                  style={{ animationDelay: `${categoryIndex * 0.1}s` }}
+                >
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border/30 pb-6">
+                    <div>
+                      <h3 className="text-3xl font-bold text-foreground relative inline-block">
+                        {category}
+                        <span className="absolute -bottom-6 left-0 w-1/3 h-1 bg-secondary/80 rounded-full" />
+                      </h3>
+                      <p className="text-foreground/50 mt-2 text-sm">Explore our finest selection of {category.toLowerCase()}</p>
+                    </div>
+                    <Link href={`/shop?category=${category}`} className="group/link text-sm font-bold text-primary hover:text-secondary uppercase tracking-wider flex items-center gap-2 transition-colors">
+                      View All Products
+                      <div className="bg-primary/10 p-2 rounded-full group-hover/link:bg-secondary/10 transition-colors">
+                        <ArrowRight size={16} className="transition-transform duration-300 group-hover/link:translate-x-1" />
+                      </div>
                     </Link>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     {categoryProducts.slice(0, 5).map((product, index) => ( // Show only first 5
-                      <div key={product.id} className="animate-in fade-in zoom-in duration-500 fill-mode-both" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <div key={product.id} className="animate-in fade-in zoom-in duration-500 fill-mode-both hover:-translate-y-2 transition-transform duration-300" style={{ animationDelay: `${(categoryIndex * 0.1) + (index * 0.05)}s` }}>
                         <ProductCard product={product} />
                       </div>
                     ))}
@@ -214,8 +240,12 @@ export default function Home() {
         )}
 
         {!loading && products.length === 0 && !error && (
-          <div className="text-center py-12 rounded-xl bg-muted/50 p-8">
-            <p className="text-foreground/60 text-lg">No products available at the moment.</p>
+          <div className="text-center py-20 rounded-3xl bg-muted/30 border border-border/50 p-12">
+            <div className="bg-muted w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="text-muted-foreground/50" size={40} />
+            </div>
+            <p className="text-foreground/60 text-xl font-medium">No products available at the moment.</p>
+            <p className="text-foreground/40 mt-2">Please check back later for our new collection.</p>
           </div>
         )}
       </section>
