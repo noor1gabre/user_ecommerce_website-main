@@ -183,12 +183,33 @@ export default function Home() {
         )}
 
         {!loading && products.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product, index) => (
-              <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <ProductCard product={product} />
-              </div>
-            ))}
+          <div className="space-y-16">
+            {Object.entries(
+              products.reduce((acc, product) => {
+                const category = product.category || "Uncategorized";
+                if (!acc[category]) acc[category] = [];
+                acc[category].push(product);
+                return acc;
+              }, {} as Record<string, Product[]>)
+            ).sort((a, b) => a[0].localeCompare(b[0])) // Sort categories alphabetically
+              .map(([category, categoryProducts]) => (
+                <div key={category} className="space-y-6">
+                  <div className="flex items-center justify-between border-b pb-4 mb-6">
+                    <h3 className="text-3xl font-bold text-foreground">{category}</h3>
+                    <Link href={`/shop?category=${category}`} className="text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors">
+                      See all <ArrowRight size={16} />
+                    </Link>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    {categoryProducts.slice(0, 5).map((product, index) => ( // Show only first 5
+                      <div key={product.id} className="animate-in fade-in zoom-in duration-500 fill-mode-both" style={{ animationDelay: `${index * 0.1}s` }}>
+                        <ProductCard product={product} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
           </div>
         )}
 
