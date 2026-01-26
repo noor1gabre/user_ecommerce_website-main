@@ -191,6 +191,10 @@
   animation: slideDown 0.3s ease-out;
 }
 
+.fill-mode-both {
+  animation-fill-mode: both;
+}
+
 /* Premium button styles with hover effects */
 .btn-premium {
   @apply relative overflow-hidden px-6 py-3 font-medium transition-all duration-300;

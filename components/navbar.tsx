@@ -54,7 +54,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/95 backdrop-blur-md border-b border-border/40 shadow-lg" : "bg-background"
+      className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? "bg-background border-b border-border/40 shadow-md" : "bg-background"
         }`}
     >
       <div className="container mx-auto px-4 py-4">
