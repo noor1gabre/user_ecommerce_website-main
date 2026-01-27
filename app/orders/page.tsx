@@ -15,6 +15,8 @@ interface Order {
     receipt_url: string
     status: string
     created_at: string
+    courier_ref?: string
+    tracking_url?: string
 }
 
 export default function OrdersPage() {
@@ -175,15 +177,32 @@ export default function OrdersPage() {
                                 </div>
 
                                 {order.receipt_url && (
-                                    <div className="mt-6 pt-4 border-t border-border flex justify-end">
-                                        <a
-                                            href={order.receipt_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-sm text-primary hover:underline hover:text-primary/80 transition-colors"
-                                        >
-                                            View Receipt Image
-                                        </a>
+                                    <div className="mt-6 pt-4 border-t border-border flex flex-wrap justify-between items-center gap-4">
+                                        <div className="flex gap-4">
+                                            <a
+                                                href={order.receipt_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-sm text-primary hover:underline hover:text-primary/80 transition-colors"
+                                            >
+                                                View Receipt
+                                            </a>
+                                            {order.courier_ref && (
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm text-muted-foreground">Waybill: {order.courier_ref}</span>
+                                                    {order.tracking_url && (
+                                                        <a
+                                                            href={order.tracking_url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-sm font-medium text-secondary hover:underline"
+                                                        >
+                                                            Track Shipment
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                             </div>

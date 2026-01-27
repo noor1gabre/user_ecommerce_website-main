@@ -13,7 +13,14 @@ import { AlertCircle, ArrowLeft } from "lucide-react"
 export default function CheckoutPage() {
   const router = useRouter()
   const { items, total, clearCart } = useCart()
-  const [formData, setFormData] = useState({ address: "", city: "" })
+  const [formData, setFormData] = useState({
+    street: "",
+    city: "",
+    province: "Gauteng",
+    postal_code: "",
+    country: "South Africa"
+  })
+
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -28,7 +35,8 @@ export default function CheckoutPage() {
     }
   }, [router])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
@@ -37,6 +45,7 @@ export default function CheckoutPage() {
       setFile(e.target.files[0])
     }
   }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,11 +61,17 @@ export default function CheckoutPage() {
       const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"
       const itemsSummary = items.map((item) => `${item.name} x${item.quantity}`).join(", ")
 
+      // Combine address fields into a single string for backend compatibility
+      // Format: Street, City, Province, Postal Code, Country
+      const fullAddress = `${formData.street}, ${formData.city}, ${formData.province}, ${formData.postal_code}, ZA`
+
       const formDataObj = new FormData()
-      formDataObj.append("address", formData.address)
+      formDataObj.append("address", fullAddress)
       formDataObj.append("items_summary", itemsSummary)
       formDataObj.append("total_price", total.toString())
       formDataObj.append("file", file)
+
+      // ... (rest of submit logic)
 
       const token = localStorage.getItem("access_token")
       const response = await fetch(`${apiUrl}/api/v1/store/checkout`, {
@@ -124,20 +139,70 @@ export default function CheckoutPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Address</label>
-                <Input
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  placeholder="123 Main Street, Apt 4B"
-                  required
-                />
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-foreground mb-2">Street Address</label>
+                  <Input
+                    name="street"
+                    value={formData.street}
+                    onChange={handleChange}
+                    placeholder="123 Main Street, Apt 4B"
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">City</label>
-                <Input name="city" value={formData.city} onChange={handleChange} placeholder="New York" required />
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">City</label>
+                  <Input
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    placeholder="e.g. Cape Town"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Province</label>
+                  <select
+                    name="province"
+                    value={formData.province}
+                    onChange={handleChange}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    required
+                  >
+                    <option value="Gauteng">Gauteng</option>
+                    <option value="Western Cape">Western Cape</option>
+                    <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                    <option value="Eastern Cape">Eastern Cape</option>
+                    <option value="Free State">Free State</option>
+                    <option value="Limpopo">Limpopo</option>
+                    <option value="Mpumalanga">Mpumalanga</option>
+                    <option value="North West">North West</option>
+                    <option value="Northern Cape">Northern Cape</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Postal Code</label>
+                  <Input
+                    name="postal_code"
+                    value={formData.postal_code}
+                    onChange={handleChange}
+                    placeholder="e.g. 8000"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Country</label>
+                  <Input
+                    name="country"
+                    value="South Africa"
+                    disabled
+                    className="bg-muted text-muted-foreground"
+                  />
+                </div>
               </div>
 
               <div className="pt-4 border-t border-border">
