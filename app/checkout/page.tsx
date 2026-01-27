@@ -9,7 +9,17 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { AlertCircle, ArrowLeft } from "lucide-react"
-import LocationPicker, { type AddressData } from "@/components/ui/location-picker"
+import dynamic from "next/dynamic"
+
+// Dynamically import LocationPicker to avoid SSR issues with Leaflet (window is not defined)
+const LocationPicker = dynamic(
+  () => import("@/components/ui/location-picker"),
+  {
+    ssr: false,
+    loading: () => <div className="h-[300px] w-full bg-muted animate-pulse rounded-lg flex items-center justify-center">Loading Map...</div>
+  }
+)
+import { type AddressData } from "@/components/ui/location-picker"
 
 export default function CheckoutPage() {
   const router = useRouter()
