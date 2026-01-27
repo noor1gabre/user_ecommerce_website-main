@@ -147,8 +147,8 @@ export default function OrdersPage() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2 text-xl font-bold text-primary">
-                                        <DollarSign size={20} />
-                                        <span>{order.total_price.toFixed(2)} EGP</span>
+                                        <span className="text-2xl">R</span>
+                                        <span>{order.total_price.toFixed(2)}</span>
                                     </div>
                                 </div>
 
@@ -171,7 +171,24 @@ export default function OrdersPage() {
                                         <div className="pl-6 text-sm space-y-1">
                                             <p className="text-foreground">{order.customer_name}</p>
                                             <p className="text-muted-foreground">{order.customer_phone}</p>
-                                            <p className="text-muted-foreground">{order.customer_address}</p>
+                                            <p className="text-muted-foreground whitespace-pre-wrap">
+                                                {(() => {
+                                                    try {
+                                                        const addr = JSON.parse(order.customer_address)
+                                                        // Let's use array push or filter join
+                                                        const p = [
+                                                            addr.street_address,
+                                                            addr.local_area,
+                                                            addr.city,
+                                                            addr.province,
+                                                            addr.postal_code
+                                                        ].filter(Boolean).join(", ")
+                                                        return p || order.customer_address
+                                                    } catch (e) {
+                                                        return order.customer_address
+                                                    }
+                                                })()}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
