@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
@@ -14,12 +14,15 @@ const icon = L.icon({
     iconAnchor: [12, 41],
 })
 
-interface AddressData {
-    street: string
+export interface AddressData {
+    street_address: string
+    local_area: string
     city: string
-    province: string
-    postal_code: string
+    province: string // Mapped to 'zone' for Courier Guy
+    postal_code: string // Mapped to 'code' for Courier Guy
     country: string
+    lat: number
+    lng: number
 }
 
 interface LocationPickerProps {
@@ -41,7 +44,7 @@ function LocationMarker({ onAddressFound }: LocationPickerProps) {
         map.locate().on("locationfound", function (e) {
             setPosition(e.latlng)
             map.flyTo(e.latlng, map.getZoom())
-            // Optional: Auto-fetch on load? Maybe annoying if accuracy is bad.
+            fetchAddress(e.latlng.lat, e.latlng.lng)
         })
     }, [map])
 
@@ -61,19 +64,22 @@ function LocationMarker({ onAddressFound }: LocationPickerProps) {
 
             if (data && data.address) {
                 const addr = data.address
-                // Map Nominatim fields to our schema
-                const result = {
-                    street: addr.road ? `${addr.house_number || ''} ${addr.road}`.trim() : "",
-                    city: addr.city || addr.town || addr.village || addr.suburb || "",
-                    province: addr.state || addr.province || "Gauteng", // Fallback logic might be needed
+
+                // Map Nominatim fields to our schema and Courier Guy requirements
+                const result: AddressData = {
+                    street_address: addr.road ? `${addr.house_number || ''} ${addr.road}`.trim() : "",
+                    local_area: addr.suburb || addr.neighbourhood || "",
+                    city: addr.city || addr.town || addr.village || "",
+                    province: addr.state || addr.province || "Gauteng",
                     postal_code: addr.postcode || "",
-                    country: addr.country || "South Africa"
+                    country: addr.country || "South Africa",
+                    lat: lat,
+                    lng: lng
                 }
 
-                // Simple check to ensure we are roughly in SA (Nominatim handles this usually, but good to check country code)
+                // Simple check to ensure we are roughly in SA
                 if (data.address.country_code !== "za") {
-                    // alert("Please select a location in South Africa.")
-                    // Actually, we just pass what we found, strict validation can be in the form
+                    console.warn("Location selected outside of South Africa")
                 }
 
                 onAddressFound(result)
@@ -92,9 +98,6 @@ function LocationMarker({ onAddressFound }: LocationPickerProps) {
 export default function LocationPicker({ onAddressFound }: LocationPickerProps) {
     // South Africa Center (approx)
     const center = { lat: -30.5595, lng: 22.9375 }
-
-    // Dynamic import wrapper logic usually needed for MapContainer in some Next setups, 
-    // but since file is "use client", we try direct first.
 
     return (
         <div className="h-[300px] w-full rounded-lg overflow-hidden border border-border z-0">

@@ -9,16 +9,20 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { AlertCircle, ArrowLeft } from "lucide-react"
+import LocationPicker, { type AddressData } from "@/components/ui/location-picker"
 
 export default function CheckoutPage() {
   const router = useRouter()
   const { items, total, clearCart } = useCart()
   const [formData, setFormData] = useState({
     street: "",
+    local_area: "",
     city: "",
     province: "Gauteng",
     postal_code: "",
-    country: "South Africa"
+    country: "South Africa",
+    lat: 0,
+    lng: 0
   })
 
   const [file, setFile] = useState<File | null>(null)
@@ -38,6 +42,20 @@ export default function CheckoutPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleAddressFound = (address: AddressData) => {
+    setFormData({
+      ...formData,
+      street: address.street_address,
+      local_area: address.local_area,
+      city: address.city,
+      province: address.province,
+      postal_code: address.postal_code,
+      country: address.country, // Should default to SA
+      lat: address.lat,
+      lng: address.lng
+    })
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,12 +79,20 @@ export default function CheckoutPage() {
       const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"
       const itemsSummary = items.map((item) => `${item.name} x${item.quantity}`).join(", ")
 
-      // Combine address fields into a single string for backend compatibility
-      // Format: Street, City, Province, Postal Code, Country
-      const fullAddress = `${formData.street}, ${formData.city}, ${formData.province}, ${formData.postal_code}, ZA`
+      // Serialize address data to JSON for backend processing
+      const addressJson = JSON.stringify({
+        street_address: formData.street,
+        local_area: formData.local_area,
+        city: formData.city,
+        province: formData.province, // Named 'zone' in Courier Guy, but let's keep it robust
+        postal_code: formData.postal_code,
+        country: formData.country,
+        lat: formData.lat,
+        lng: formData.lng
+      })
 
       const formDataObj = new FormData()
-      formDataObj.append("address", fullAddress)
+      formDataObj.append("address", addressJson)
       formDataObj.append("items_summary", itemsSummary)
       formDataObj.append("total_price", total.toString())
       formDataObj.append("file", file)
@@ -139,6 +165,13 @@ export default function CheckoutPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
+
+              <div className="mb-6">
+                <h3 className="text-lg font-medium mb-3">Delivery Location</h3>
+                <p className="text-sm text-muted-foreground mb-3">Please select your delivery location on the map.</p>
+                <LocationPicker onAddressFound={handleAddressFound} />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-foreground mb-2">Street Address</label>
@@ -147,6 +180,17 @@ export default function CheckoutPage() {
                     value={formData.street}
                     onChange={handleChange}
                     placeholder="123 Main Street, Apt 4B"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Suburb / Local Area</label>
+                  <Input
+                    name="local_area"
+                    value={formData.local_area}
+                    onChange={handleChange}
+                    placeholder="e.g. Menlo Park"
                     required
                   />
                 </div>
