@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet"
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch"
+import "leaflet-geosearch/dist/geosearch.css"
 
 // Fix for default marker icon in Leaflet with Next.js
 const icon = L.icon({
@@ -29,25 +31,49 @@ interface LocationPickerProps {
     onAddressFound: (address: AddressData) => void
 }
 
+function SearchField({ onLocationSelected }: { onLocationSelected: (lat: number, lng: number) => void }) {
+    const map = useMap()
+
+    useEffect(() => {
+        const provider = new OpenStreetMapProvider({
+            params: {
+                countrycodes: 'za', // Limit to South Africa
+            },
+        })
+
+        // @ts-ignore
+        const searchControl = new GeoSearchControl({
+            provider: provider,
+            style: 'bar',
+            showMarker: false, // We use our own marker
+            showPopup: false,
+            autoClose: true,
+            retainZoomLevel: false,
+            animateZoom: true,
+            keepResult: false,
+            searchLabel: 'Enter address',
+        })
+
+        map.addControl(searchControl)
+
+        map.on('geosearch/showlocation', (result: any) => {
+            if (result.location) {
+                onLocationSelected(result.location.y, result.location.x)
+            }
+        })
+
+        return () => {
+            map.removeControl(searchControl)
+        }
+    }, [map, onLocationSelected])
+
+    return null
+}
+
 function LocationMarker({ onAddressFound }: LocationPickerProps) {
     const [position, setPosition] = useState<L.LatLng | null>(null)
-    const map = useMapEvents({
-        click(e) {
-            setPosition(e.latlng)
-            map.flyTo(e.latlng, map.getZoom())
-            fetchAddress(e.latlng.lat, e.latlng.lng)
-        },
-    })
 
-    // Attempt to get user location on load
-    useEffect(() => {
-        map.locate().on("locationfound", function (e) {
-            setPosition(e.latlng)
-            map.flyTo(e.latlng, map.getZoom())
-            fetchAddress(e.latlng.lat, e.latlng.lng)
-        })
-    }, [map])
-
+    // Define fetchAddress outside to be used by both click and search
     const fetchAddress = async (lat: number, lng: number) => {
         try {
             // Using OpenStreetMap Nominatim API
@@ -90,8 +116,38 @@ function LocationMarker({ onAddressFound }: LocationPickerProps) {
         }
     }
 
-    return position === null ? null : (
-        <Marker position={position} icon={icon}></Marker>
+    const map = useMapEvents({
+        click(e) {
+            setPosition(e.latlng)
+            map.flyTo(e.latlng, map.getZoom())
+            fetchAddress(e.latlng.lat, e.latlng.lng)
+        },
+    })
+
+    // Attempt to get user location on load
+    useEffect(() => {
+        map.locate().on("locationfound", function (e) {
+            setPosition(e.latlng)
+            map.flyTo(e.latlng, map.getZoom())
+            fetchAddress(e.latlng.lat, e.latlng.lng)
+        })
+    }, [map])
+
+    // Logic for SearchField callback
+    const handleSearchLocation = (lat: number, lng: number) => {
+        const newPos = new L.LatLng(lat, lng)
+        setPosition(newPos)
+        // map.flyTo(newPos, 16) // geosearch does this already usually
+        fetchAddress(lat, lng)
+    }
+
+    return (
+        <>
+            <SearchField onLocationSelected={handleSearchLocation} />
+            {position === null ? null : (
+                <Marker position={position} icon={icon}></Marker>
+            )}
+        </>
     )
 }
 
@@ -100,7 +156,7 @@ export default function LocationPicker({ onAddressFound }: LocationPickerProps) 
     const center = { lat: -30.5595, lng: 22.9375 }
 
     return (
-        <div className="h-[300px] w-full rounded-lg overflow-hidden border border-border z-0">
+        <div className="h-[300px] w-full rounded-lg overflow-hidden border border-border z-0 relative">
             <MapContainer
                 center={center}
                 zoom={5}
