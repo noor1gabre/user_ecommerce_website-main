@@ -16,6 +16,7 @@ interface Order {
     status: string
     created_at: string
     courier_ref?: string
+    courier_status?: string
     tracking_url?: string
 }
 
@@ -193,35 +194,43 @@ export default function OrdersPage() {
                                     </div>
                                 </div>
 
-                                {order.receipt_url && (
-                                    <div className="mt-6 pt-4 border-t border-border flex flex-wrap justify-between items-center gap-4">
-                                        <div className="flex gap-4">
-                                            <a
-                                                href={order.receipt_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-sm text-primary hover:underline hover:text-primary/80 transition-colors"
-                                            >
-                                                View Receipt
-                                            </a>
-                                            {order.courier_ref && (
+                                <div className="mt-6 pt-4 border-t border-border flex flex-wrap justify-between items-center gap-4">
+                                    <div className="flex gap-4 items-center w-full">
+                                        <a
+                                            href={order.receipt_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-sm text-primary hover:underline hover:text-primary/80 transition-colors"
+                                        >
+                                            View Receipt
+                                        </a>
+
+                                        {order.courier_ref && (
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 ml-auto bg-muted/30 p-2 rounded-lg border border-border/50">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-sm text-muted-foreground">Waybill: {order.courier_ref}</span>
-                                                    {order.tracking_url && (
-                                                        <a
-                                                            href={order.tracking_url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="text-sm font-medium text-secondary hover:underline"
-                                                        >
-                                                            Track Shipment
-                                                        </a>
-                                                    )}
+                                                    <span role="img" aria-label="truck">🚚</span>
+                                                    <span className="text-sm font-medium">Waybill: {order.courier_ref}</span>
                                                 </div>
-                                            )}
-                                        </div>
+                                                {order.courier_status && (
+                                                    <span className="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full uppercase tracking-wider font-semibold">
+                                                        {order.courier_status}
+                                                    </span>
+                                                )}
+                                                {order.tracking_url && (
+                                                    <a
+                                                        href={order.tracking_url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-sm font-bold text-secondary hover:underline flex items-center gap-1"
+                                                    >
+                                                        Track Shipment
+                                                        <ArrowLeft className="rotate-180" size={12} />
+                                                    </a>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
-                                )}
+                                </div>
                             </div>
                         ))}
                     </div>

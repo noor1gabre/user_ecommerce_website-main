@@ -124,12 +124,8 @@ export default function CheckoutPage() {
       const data = await response.json()
       clearCart()
 
-      // Redirect to WhatsApp link
-      if (data.whatsapp_link) {
-        window.location.href = data.whatsapp_link
-      } else {
-        router.push("/")
-      }
+      // Redirect to Orders page to show the new order and courier details
+      router.push("/orders")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Checkout failed")
     } finally {
