@@ -95,7 +95,8 @@ function LocationMarker({ onAddressFound }: LocationPickerProps) {
                 const result: AddressData = {
                     street_address: addr.road ? `${addr.house_number || ''} ${addr.road}`.trim() : "",
                     local_area: addr.suburb || addr.neighbourhood || "",
-                    city: addr.city || addr.town || addr.village || "",
+                    // Improved City Extraction: Check all possible fields
+                    city: addr.city || addr.town || addr.village || addr.municipality || addr.city_district || addr.county || "",
                     province: addr.state || addr.province || "Gauteng",
                     postal_code: addr.postcode || "",
                     country: addr.country || "South Africa",
