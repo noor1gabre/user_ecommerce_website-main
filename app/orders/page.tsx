@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Package, Calendar, MapPin, DollarSign, Clock, CheckCircle, XCircle, MessageCircle } from "lucide-react"
@@ -23,7 +23,8 @@ interface Order {
     paid?: boolean
 }
 
-export default function OrdersPage() {
+// 1. We extract the main logic into a sub-component
+function OrdersContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [orders, setOrders] = useState<Order[]>([])
@@ -389,5 +390,21 @@ export default function OrdersPage() {
                 )}
             </div>
         </div>
+    )
+}
+
+// 2. We use Suspense in the main default export to wrap the logic above
+export default function OrdersPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <div className="text-center space-y-4">
+                    <div className="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin mx-auto"></div>
+                    <p className="text-muted-foreground">Loading...</p>
+                </div>
+            </div>
+        }>
+            <OrdersContent />
+        </Suspense>
     )
 }
