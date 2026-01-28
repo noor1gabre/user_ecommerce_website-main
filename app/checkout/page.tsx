@@ -108,6 +108,7 @@ export default function CheckoutPage() {
       formDataObj.append("address", addressJson)
       formDataObj.append("items_summary", itemsSummary)
       formDataObj.append("total_price", total.toString())
+      formDataObj.append("payment_method", paymentMethod)
       // formDataObj.append("file", file) // Handle file conditionally?
 
       // If manual, we MUST have a file. If payfast, we might not need it yet or send a dummy?
