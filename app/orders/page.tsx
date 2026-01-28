@@ -263,14 +263,16 @@ export default function OrdersPage() {
 
                                 <div className="mt-6 pt-4 border-t border-border flex flex-wrap justify-between items-center gap-4">
                                     <div className="flex gap-4 items-center w-full">
-                                        <a
-                                            href={order.receipt_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-sm text-primary hover:underline hover:text-primary/80 transition-colors"
-                                        >
-                                            View Receipt
-                                        </a>
+                                        {order.payment_method !== 'payfast' && (
+                                            <a
+                                                href={order.receipt_url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-sm text-primary hover:underline hover:text-primary/80 transition-colors"
+                                            >
+                                                View Receipt
+                                            </a>
+                                        )}
 
                                         {order.courier_ref && (
                                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 ml-auto bg-muted/30 p-2 rounded-lg border border-border/50">
