@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, Package, Calendar, MapPin, DollarSign, Clock } from "lucide-react"
+import { ArrowLeft, Package, Calendar, MapPin, DollarSign, Clock, CheckCircle, XCircle, MessageCircle } from "lucide-react"
+import { toast } from "sonner"
 
 interface Order {
     id: number
@@ -24,9 +25,57 @@ interface Order {
 
 export default function OrdersPage() {
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [orders, setOrders] = useState<Order[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [showWhatsAppModal, setShowWhatsAppModal] = useState(false)
+    const [successOrderId, setSuccessOrderId] = useState<number | null>(null)
+
+    useEffect(() => {
+        const status = searchParams.get('status')
+        const orderId = searchParams.get('order_id')
+
+        if (status === 'cancelled') {
+            toast.error("Payment was cancelled. You can retry anytime.", {
+                icon: <XCircle className="text-red-500" />
+            })
+            // Clean URL params without refresh
+            window.history.replaceState(null, '', '/orders')
+        } else if (status === 'success' && orderId) {
+            toast.success("Payment successful!", {
+                icon: <CheckCircle className="text-green-500" />
+            })
+            setSuccessOrderId(parseInt(orderId))
+            setShowWhatsAppModal(true)
+            window.history.replaceState(null, '', '/orders')
+        }
+    }, [searchParams])
+
+    const handleSendToWhatsApp = async () => {
+        if (!successOrderId) return
+
+        try {
+            const token = localStorage.getItem("access_token")
+            const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"
+
+            const response = await fetch(`${apiUrl}/api/v1/store/orders/${successOrderId}/whatsapp`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+
+            if (!response.ok) throw new Error("Failed to get WhatsApp link")
+
+            const data = await response.json()
+            if (data.whatsapp_link) {
+                window.open(data.whatsapp_link, '_blank')
+                setShowWhatsAppModal(false)
+            }
+        } catch (err) {
+            toast.error("Could not open WhatsApp")
+        }
+    }
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -248,15 +297,18 @@ export default function OrdersPage() {
 
                                 {order.payment_method === 'payfast' && !order.paid && order.status === 'pending' && (
                                     <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center justify-between">
-                                        <div className="flex items-center gap-2 text-yellow-800">
-                                            <DollarSign size={20} />
-                                            <span className="font-medium">Payment Required</span>
+                                        <div className="flex flex-col gap-1 text-yellow-800">
+                                            <div className="flex items-center gap-2">
+                                                <DollarSign size={20} />
+                                                <span className="font-medium">Payment Required</span>
+                                            </div>
+                                            <p className="text-red-500 text-xs font-semibold pl-7">Transaction not committed</p>
                                         </div>
                                         <button
                                             onClick={() => handlePayNow(order)}
                                             className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all font-medium text-sm flex items-center gap-2"
                                         >
-                                            Pay Now with PayFast
+                                            Complete Payment
                                         </button>
                                     </div>
                                 )}
@@ -302,6 +354,37 @@ export default function OrdersPage() {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                )}
+                {/* WhatsApp Success Modal */}
+                {showWhatsAppModal && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm animate-in fade-in duration-200">
+                        <div className="bg-background rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-border scale-100 animate-in zoom-in-95 duration-200">
+                            <div className="text-center space-y-4">
+                                <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                    <CheckCircle className="text-green-600" size={24} />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold">Payment Successful!</h3>
+                                    <p className="text-muted-foreground text-sm mt-2">
+                                        Your order has been confirmed. Please send your order details to us via WhatsApp to finalize processing.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={handleSendToWhatsApp}
+                                    className="w-full py-3 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-500/20"
+                                >
+                                    <MessageCircle size={20} />
+                                    Send to WhatsApp
+                                </button>
+                                <button
+                                    onClick={() => setShowWhatsAppModal(false)}
+                                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                                >
+                                    Skip for now
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
