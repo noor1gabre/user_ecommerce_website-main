@@ -18,6 +18,8 @@ interface Order {
     courier_ref?: string
     courier_status?: string
     tracking_url?: string
+    payment_method?: string
+    paid?: boolean
 }
 
 export default function OrdersPage() {
@@ -80,12 +82,62 @@ export default function OrdersPage() {
         }
     }
 
+    const handlePayNow = async (order: Order) => {
+        try {
+            setLoading(true)
+            const token = localStorage.getItem("access_token")
+            const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"
+
+            // 1. Initiate PayFast Payment
+            const initResponse = await fetch(`${apiUrl}/api/v1/payfast/initiate`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Bearer ${token}`
+                },
+                body: new URLSearchParams({
+                    order_id: order.id.toString(),
+                    amount: order.total_price.toString(),
+                    item_name: `Order #${order.id}`
+                })
+            })
+
+            if (!initResponse.ok) {
+                throw new Error("Failed to initiate PayFast payment")
+            }
+
+            const pfData = await initResponse.json()
+
+            // 2. Create Hidden Form and Submit
+            const form = document.createElement("form")
+            form.method = "POST"
+            form.action = pfData.process_url
+
+            Object.keys(pfData).forEach(key => {
+                if (key !== 'process_url') {
+                    const input = document.createElement("input")
+                    input.type = "hidden"
+                    input.name = key
+                    input.value = pfData[key]
+                    form.appendChild(input)
+                }
+            })
+
+            document.body.appendChild(form)
+            form.submit()
+
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Payment failed")
+            setLoading(false)
+        }
+    }
+
     if (loading) {
         return (
             <div className="min-h-screen bg-background flex items-center justify-center">
                 <div className="text-center space-y-4">
                     <div className="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin mx-auto"></div>
-                    <p className="text-muted-foreground">Loading your orders...</p>
+                    <p className="text-muted-foreground">Loading...</p>
                 </div>
             </div>
         )
@@ -193,6 +245,21 @@ export default function OrdersPage() {
                                         </div>
                                     </div>
                                 </div>
+
+                                {order.payment_method === 'payfast' && !order.paid && order.status === 'pending' && (
+                                    <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center justify-between">
+                                        <div className="flex items-center gap-2 text-yellow-800">
+                                            <DollarSign size={20} />
+                                            <span className="font-medium">Payment Required</span>
+                                        </div>
+                                        <button
+                                            onClick={() => handlePayNow(order)}
+                                            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all font-medium text-sm flex items-center gap-2"
+                                        >
+                                            Pay Now with PayFast
+                                        </button>
+                                    </div>
+                                )}
 
                                 <div className="mt-6 pt-4 border-t border-border flex flex-wrap justify-between items-center gap-4">
                                     <div className="flex gap-4 items-center w-full">
