@@ -331,13 +331,11 @@ function OrdersContent() {
                                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 ml-auto bg-muted/30 p-2 rounded-lg border border-border/50">
                                                 <div className="flex items-center gap-2">
                                                     <span role="img" aria-label="truck">🚚</span>
+                                                    {/* Display the Waybill clearly */}
                                                     <span className="text-sm font-medium">Waybill: {order.courier_ref}</span>
                                                 </div>
-                                                {order.courier_status && (
-                                                    <span className="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full uppercase tracking-wider font-semibold">
-                                                        {order.courier_status}
-                                                    </span>
-                                                )}
+
+                                                {/* Track Button */}
                                                 {order.tracking_url && (
                                                     <a
                                                         href={order.tracking_url}
