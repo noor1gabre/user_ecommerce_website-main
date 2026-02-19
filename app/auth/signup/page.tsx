@@ -11,11 +11,11 @@ import { AlertCircle } from "lucide-react"
 
 export default function SignupPage() {
   const router = useRouter()
-  const [formData, setFormData] = useState({ full_name: "", phone: "", password: "" })
+  const [formData, setFormData] = useState({ full_name: "", phone: "", password: "", countryCode: "+27" })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
@@ -26,10 +26,21 @@ export default function SignupPage() {
 
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"
+
+      // Combine Country Code + Phone
+      let cleanPhone = formData.phone.replace(/^0+/, "") // Remove leading zero
+      const fullPhone = `${formData.countryCode}${cleanPhone}`
+
+      const payload = {
+        full_name: formData.full_name,
+        phone: fullPhone,
+        password: formData.password
+      }
+
       const response = await fetch(`${apiUrl}/api/v1/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       })
 
       if (!response.ok) {
@@ -72,14 +83,27 @@ export default function SignupPage() {
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">Phone Number</label>
-            <Input
-              name="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="+1 234 567 8900"
-              required
-            />
+            <div className="flex gap-2">
+              <select
+                name="countryCode"
+                value={formData.countryCode}
+                onChange={handleChange}
+                className="flex h-10 w-24 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <option value="+27">🇿🇦 +27</option>
+                <option value="+20">🇪🇬 +20</option>
+              </select>
+              <Input
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="e.g. 71 234 5678"
+                required
+                className="flex-1"
+              />
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">Select country (SA or Egypt only)</p>
           </div>
 
           <div>
