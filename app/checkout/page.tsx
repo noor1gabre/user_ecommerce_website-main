@@ -309,7 +309,7 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* Order Summary */}
+        {/* Order Summary s*/}
         <div className="bg-card border border-border rounded-lg p-6 h-fit sticky top-20">
           <h2 className="text-xl font-bold text-foreground mb-6">Order Summary</h2>
           <div className="space-y-3 mb-6 max-h-64 overflow-y-auto">
