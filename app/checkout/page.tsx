@@ -126,6 +126,11 @@ export default function CheckoutPage() {
       const data = await response.json()
 
       // Manual Flow Success
+      const waLink = data.whatsapp_link
+      if (waLink) {
+        window.open(waLink, '_blank')
+      }
+
       clearCart()
       router.push("/orders")
 
