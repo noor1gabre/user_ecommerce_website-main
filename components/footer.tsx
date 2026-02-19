@@ -10,20 +10,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="animate-fade-in-up">
-            <h3 className="text-2xl font-bold mb-4">HomeDecor</h3>
+            <h3 className="text-2xl font-bold mb-4">Family & Home</h3>
             <p className="text-white/70 mb-6">
-              Creating beautiful spaces with premium furniture and design solutions since 2004.
+              Creating beautiful spaces with premium furniture and design solutions for your home.
             </p>
-            <div className="flex items-center gap-4">
-              {[Facebook, Instagram, Twitter].map((Icon, i) => (
-                <button
-                  key={i}
-                  className="w-10 h-10 rounded-full bg-white/20 hover:bg-secondary transition-colors flex items-center justify-center"
-                >
-                  <Icon className="w-5 h-5" />
-                </button>
-              ))}
-            </div>
+
           </div>
 
           {/* Quick Links */}
@@ -52,7 +43,6 @@ export default function Footer() {
               {[
                 { label: "Contact Us", href: "/contact" },
                 { label: "FAQs", href: "/contact" },
-                { label: "Returns", href: "/contact" },
                 { label: "Shipping Info", href: "/contact" },
               ].map((link, i) => (
                 <li key={i}>

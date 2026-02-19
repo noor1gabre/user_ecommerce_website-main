@@ -132,18 +132,15 @@ export default function Home() {
                 <Truck className="text-secondary" size={28} />
               </div>
               <div>
-                <p className="font-bold text-lg text-foreground mb-1">Free Shipping</p>
-                <p className="text-foreground/60">On orders over R 100</p>
+                <p className="font-bold text-lg text-foreground mb-1">Nationwide Delivery</p>
+                <p className="text-foreground/60">Reliable shipping across SA</p>
               </div>
             </div>
             <div className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:bg-primary/5 hover:shadow-lg hover:-translate-y-1 cursor-default">
               <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
                 <Shield className="text-primary" size={28} />
               </div>
-              <div>
-                <p className="font-bold text-lg text-foreground mb-1">Secure Payment</p>
-                <p className="text-foreground/60">100% safe transactions</p>
-              </div>
+
             </div>
             <div className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:bg-secondary/5 hover:shadow-lg hover:-translate-y-1 cursor-default">
               <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:bg-secondary/20 group-hover:scale-110">

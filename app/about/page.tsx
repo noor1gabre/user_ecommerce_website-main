@@ -34,7 +34,7 @@ export default function AboutPage() {
     { number: "15K+", label: "Happy Customers" },
     { number: "2K+", label: "Products" },
     { number: "50+", label: "Awards" },
-    { number: "20+", label: "Years Experience" },
+    { number: "10+", label: "Years Experience" },
   ]
 
   return (
@@ -46,7 +46,7 @@ export default function AboutPage() {
             Crafting Spaces, Creating Memories
           </h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">
-            Since 2004, we've been dedicated to bringing beauty, comfort, and quality into homes worldwide.
+            We've been dedicated to bringing beauty, comfort, and quality into homes, transforming living spaces one piece at a time.
           </p>
         </div>
       </div>
@@ -60,23 +60,19 @@ export default function AboutPage() {
           <div className="animate-fade-in-up" style={{ animationDelay: "100ms" }}>
             <h2 className="text-4xl font-bold text-foreground mb-6">Our Story</h2>
             <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-              Founded in 2004, our journey began with a simple vision: to create spaces that inspire and comfort. What
-              started as a small boutique furniture shop has grown into a trusted name in home design and furnishings.
+              Our journey began with a simple vision: to create spaces that inspire and comfort. What started as a passion for quality furniture has grown into a trusted destination for home design and furnishings.
             </p>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              We believe that your home should reflect your personality and values. That's why we carefully curate every
-              piece in our collection, working directly with skilled artisans and sustainable suppliers around the
-              world.
+              We believe that your home should reflect your unique personality and values. That's why we meticulously select every piece in our collection, partnering with skilled artisans and reputable suppliers who share our commitment to craftsmanship.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Today, we serve over 15,000 satisfied customers and continue to expand our collection with the latest in
-              design trends while maintaining our commitment to quality and sustainability.
+              Today, we are proud to serve thousands of happy customers, continuously expanding our range with timeless designs while maintaining our dedication to quality and service.
             </p>
           </div>
         </div>
       </div>
 
-    
+
 
       {/* CTA Section */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">

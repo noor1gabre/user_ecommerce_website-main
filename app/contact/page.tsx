@@ -45,20 +45,14 @@ export default function ContactPage() {
             {
               icon: Phone,
               title: "Phone",
-              content: "+1 (555) 123-4567",
-              description: "Available Monday-Friday, 9 AM-6 PM EST",
-            },
-            {
-              icon: Mail,
-              title: "Email",
-              content: "support@homedecor.com",
-              description: "We respond within 24 hours",
+              content: "+27 67 100 4162",
+              description: "Available Monday-Friday, 9 AM-6 PM",
             },
             {
               icon: MapPin,
               title: "Address",
-              content: "123 Design Street, New York, NY 10001",
-              description: "Visit our showroom by appointment",
+              content: "China Mall, Main Reef Road, Amalgam, Johannesburg",
+              description: "Visit our showroom",
             },
           ].map((item, index) => {
             const Icon = item.icon
@@ -152,12 +146,8 @@ export default function ContactPage() {
           <div className="max-w-3xl mx-auto space-y-4">
             {[
               {
-                q: "What is your return policy?",
-                a: "We offer a 30-day return policy on all products. Items must be in original condition.",
-              },
-              {
                 q: "Do you offer shipping?",
-                a: "Yes, we ship worldwide. Shipping costs and times vary by location.",
+                a: "Yes, we deliver across South Africa. Shipping costs and times vary by location.",
               },
               {
                 q: "Can I customize furniture?",
@@ -165,7 +155,7 @@ export default function ContactPage() {
               },
               {
                 q: "How long does delivery take?",
-                a: "Standard delivery takes 5-7 business days. Express options are available.",
+                a: "Standard delivery takes 2-5 business days depending on your location.",
               },
             ].map((faq, index) => (
               <details
