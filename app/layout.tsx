@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   icons: {
     icon: "/family_home_logo.ico",
   },
+  verification: {
+    google: "iCqiaELFGq5Fc_JR8YrTAFCpckmuVwpvxHSwUCHAY50",
+  },
 }
 
 export default function RootLayout({
