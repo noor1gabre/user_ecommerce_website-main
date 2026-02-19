@@ -21,6 +21,8 @@ interface Order {
     tracking_url?: string
     payment_method?: string
     paid?: boolean
+    shipping_cost?: number
+    courier_service_name?: string
 }
 
 // 1. We extract the main logic into a sub-component
@@ -328,11 +330,17 @@ function OrdersContent() {
                                         )}
 
                                         {order.courier_ref && (
-                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 ml-auto bg-muted/30 p-2 rounded-lg border border-border/50">
-                                                <div className="flex items-center gap-2">
+                                            <div className="flex flex-col gap-2 w-full sm:w-auto bg-muted/30 p-3 rounded-lg border border-border/50">
+                                                <div className="flex items-center gap-2 text-sm font-medium">
                                                     <span role="img" aria-label="truck">🚚</span>
-                                                    {/* Display the Waybill clearly */}
-                                                    <span className="text-sm font-medium">Waybill: {order.courier_ref}</span>
+                                                    <span>{order.courier_service_name || "Courier"}</span>
+                                                </div>
+
+                                                <div className="flex flex-col text-xs text-muted-foreground gap-1 pl-6">
+                                                    <span>Ref: <span className="font-mono text-foreground">{order.courier_ref}</span></span>
+                                                    {order.shipping_cost ? (
+                                                        <span>Shipping Cost: <span className="font-semibold text-foreground">R {order.shipping_cost.toFixed(2)}</span></span>
+                                                    ) : null}
                                                 </div>
 
                                                 {/* Track Button */}
@@ -341,10 +349,10 @@ function OrdersContent() {
                                                         href={order.tracking_url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="text-sm font-bold text-secondary hover:underline flex items-center gap-1"
+                                                        className="mt-1 text-xs font-bold text-secondary hover:underline flex items-center gap-1 pl-6"
                                                     >
                                                         Track Shipment
-                                                        <ArrowLeft className="rotate-180" size={12} />
+                                                        <ArrowLeft className="rotate-180" size={10} />
                                                     </a>
                                                 )}
                                             </div>
