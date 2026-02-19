@@ -39,7 +39,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState<'manual' | 'payfast'>('payfast')
+  // const [paymentMethod, setPaymentMethod] = useState<'manual' | 'payfast'>('payfast') // Removed
 
   useEffect(() => {
     const token = localStorage.getItem("access_token")
@@ -79,9 +79,9 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validation for manual method
-    if (paymentMethod === 'manual' && !file) {
-      setError("Please upload a payment screenshot")
+    // Validation
+    if (!file) {
+      setError("Please upload a payment receipt.")
       return
     }
 
@@ -108,25 +108,8 @@ export default function CheckoutPage() {
       formDataObj.append("address", addressJson)
       formDataObj.append("items_summary", itemsSummary)
       formDataObj.append("total_price", total.toString())
-      formDataObj.append("payment_method", paymentMethod)
-      // formDataObj.append("file", file) // Handle file conditionally?
-
-      // If manual, we MUST have a file. If payfast, we might not need it yet or send a dummy?
-      // The current backend Endpoint expects a file. 
-      // Option A: Update Backend to make file optional.
-      // Option B: Send a dummy file for PayFast initiation.
-      // Let's go with B for now to avoid breaking existing backend logic, 
-      // but ideally we should make file optional in backend.
-
-      if (paymentMethod === 'manual' && file) {
-        formDataObj.append("file", file)
-      } else {
-        // Send empty blob or skip if backend allows. 
-        // Checking backend... it uses File(...) which usually implies required.
-        // let's send a dummy empty text file.
-        const blob = new Blob(["payfast_placeholder"], { type: "text/plain" });
-        formDataObj.append("file", blob, "payfast_placeholder.txt");
-      }
+      formDataObj.append("payment_method", "manual")
+      formDataObj.append("file", file)
 
       const token = localStorage.getItem("access_token")
       const response = await fetch(`${apiUrl}/api/v1/store/checkout`, {
@@ -142,57 +125,9 @@ export default function CheckoutPage() {
 
       const data = await response.json()
 
-      if (paymentMethod === 'payfast') {
-        // 2. Initiate PayFast Payment
-        const orderId = data.order_id
-        const initResponse = await fetch(`${apiUrl}/api/v1/payfast/initiate`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: `Bearer ${token}`
-          },
-          body: new URLSearchParams({
-            order_id: orderId.toString(),
-            amount: total.toString(),
-            item_name: `Order #${orderId}`
-          })
-        })
-
-        if (!initResponse.ok) {
-          throw new Error("Failed to initiate PayFast payment")
-        }
-
-        const pfData = await initResponse.json()
-
-        // 3. Create Hidden Form and Submit
-        const form = document.createElement("form")
-        form.method = "POST"
-        form.action = pfData.process_url
-
-        // Add all fields
-        Object.keys(pfData).forEach(key => {
-          if (key !== 'process_url') {
-            const input = document.createElement("input")
-            input.type = "hidden"
-            input.name = key
-            input.value = pfData[key]
-            form.appendChild(input)
-          }
-        })
-
-        document.body.appendChild(form)
-        form.submit()
-        // Do NOT clear cart yet? Or clear it? 
-        // Usually clear cart here or on return.
-        // Since it's a redirect, we might want to clear it now 
-        // assuming they will complete it.
-        clearCart()
-
-      } else {
-        // Manual Flow
-        clearCart()
-        router.push("/orders")
-      }
+      // Manual Flow Success
+      clearCart()
+      router.push("/orders")
 
     } catch (err) {
       setError(err instanceof Error ? err.message : "Checkout failed")
@@ -326,55 +261,49 @@ export default function CheckoutPage() {
               <div className="pt-4 border-t border-border">
                 <h3 className="font-semibold text-foreground mb-4">Payment Method</h3>
                 <div className="grid grid-cols-1 gap-4">
-                  <div className={`p-4 border rounded-lg cursor-pointer transition-colors ${paymentMethod === 'payfast' ? 'border-primary bg-primary/5' : 'border-border'}`} onClick={() => setPaymentMethod('payfast')}>
+                  {/* Manual / EFT Option Only */}
+                  <div className={`p-4 border rounded-lg cursor-pointer transition-colors border-primary bg-primary/5`}>
                     <div className="flex items-center gap-3">
-                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${paymentMethod === 'payfast' ? 'border-primary' : 'border-muted-foreground'}`}>
-                        {paymentMethod === 'payfast' && <div className="w-3 h-3 rounded-full bg-primary" />}
-                      </div>
-                      <span className="font-medium">PayFast (Instant EFT / Card)</span>
-                    </div>
-                  </div>
-
-                  <div className={`p-4 border rounded-lg cursor-pointer transition-colors ${paymentMethod === 'manual' ? 'border-primary bg-primary/5' : 'border-border'}`} onClick={() => setPaymentMethod('manual')}>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${paymentMethod === 'manual' ? 'border-primary' : 'border-muted-foreground'}`}>
-                        {paymentMethod === 'manual' && <div className="w-3 h-3 rounded-full bg-primary" />}
+                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center border-primary`}>
+                        <div className="w-3 h-3 rounded-full bg-primary" />
                       </div>
                       <span className="font-medium">Bank Transfer / Instapay</span>
                     </div>
-                    <p className="text-sm text-muted-foreground ml-8 mt-1">Upload proof of payment manually</p>
+                    <p className="text-sm text-muted-foreground ml-8 mt-1">Please upload your proof of payment below.</p>
                   </div>
                 </div>
               </div>
 
-              {paymentMethod === 'manual' && (
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Upload Payment Screenshot</label>
-                  <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-                    <input
-                      type="file"
-                      onChange={handleFileChange}
-                      accept="image/*"
-                      required
-                      className="hidden"
-                      id="file-upload"
-                    />
-                    <label htmlFor="file-upload" className="cursor-pointer">
-                      {file ? (
+              {/* File Upload Always Visible */}
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Upload Payment Receipt <span className="text-destructive">*</span></label>
+                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    required
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <label htmlFor="file-upload" className="cursor-pointer">
+                    {file ? (
+                      <div className="flex flex-col items-center">
                         <p className="text-primary font-medium">{file.name}</p>
-                      ) : (
-                        <div>
-                          <p className="text-muted-foreground">Drag and drop your payment screenshot here</p>
-                          <p className="text-sm text-muted-foreground mt-2">or click to select</p>
-                        </div>
-                      )}
-                    </label>
-                  </div>
+                        <p className="text-xs text-muted-foreground mt-1">Click to change</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="text-muted-foreground">Drag and drop your payment screenshot here</p>
+                        <p className="text-sm text-muted-foreground mt-2">or click to select</p>
+                      </div>
+                    )}
+                  </label>
                 </div>
-              )}
+              </div>
 
               <Button type="submit" disabled={loading} className="coral-accent w-full py-6 text-lg">
-                {loading ? "Processing..." : (paymentMethod === 'payfast' ? "Pay with PayFast" : "Confirm & Chat with Admin")}
+                {loading ? "Processing..." : "Confirm & Place Order"}
               </Button>
             </form>
           </div>
