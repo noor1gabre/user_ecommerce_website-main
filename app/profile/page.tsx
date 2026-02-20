@@ -241,17 +241,7 @@ export default function ProfilePage() {
                     />
                   </div>
 
-                  {/* Email */}
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-foreground">Email (Optional)</label>
-                    <input
-                      type="email"
-                      value={editData?.email || ""}
-                      onChange={(e) => handleEditChange("email", e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                      placeholder="Enter your email"
-                    />
-                  </div>
+
 
                   <div className="flex gap-4 pt-6">
                     <button
@@ -289,12 +279,6 @@ export default function ProfilePage() {
                       </p>
                     </div>
 
-                    <div className="group">
-                      <p className="text-sm font-medium text-muted-foreground mb-2">Email</p>
-                      <p className="text-lg font-semibold text-foreground">
-                        {userData.email || <span className="text-muted-foreground italic">Not provided</span>}
-                      </p>
-                    </div>
                   </div>
 
                   {/* Stats */}
@@ -307,7 +291,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="text-center">
                       <p className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        {stats.totalSpent.toFixed(2)} EGP
+                        R {stats.totalSpent.toFixed(2)}
                       </p>
                       <p className="text-sm text-muted-foreground mt-1">Total Spent</p>
                     </div>

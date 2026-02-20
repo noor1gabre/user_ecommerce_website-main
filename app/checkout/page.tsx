@@ -272,9 +272,19 @@ export default function CheckoutPage() {
                       <div className={`w-5 h-5 rounded-full border flex items-center justify-center border-primary`}>
                         <div className="w-3 h-3 rounded-full bg-primary" />
                       </div>
-                      <span className="font-medium">Bank Transfer / Instapay</span>
+                      <span className="font-medium">Manual EFT</span>
                     </div>
-                    <p className="text-sm text-muted-foreground ml-8 mt-1">Please upload your proof of payment below.</p>
+                    <div className="text-sm text-foreground ml-8 mt-4 p-4 bg-background rounded border border-border">
+                      <p className="font-semibold mb-2">Please transfer the total amount to the following bank account:</p>
+                      <ul className="space-y-1 mb-4 text-muted-foreground">
+                        <li><strong className="text-foreground font-medium">Bank:</strong> TymeBank</li>
+                        <li><strong className="text-foreground font-medium">Account Name:</strong> Diaa Ahmed</li>
+                        <li><strong className="text-foreground font-medium">Account Number:</strong> 5107 0831 929</li>
+                        <li><strong className="text-foreground font-medium">Branch Code:</strong> 678910</li>
+                        <li><strong className="text-foreground font-medium">Account Type:</strong> EveryDay account</li>
+                      </ul>
+                      <p className="text-primary font-medium">Once transferred, please upload your proof of payment below.</p>
+                    </div>
                   </div>
                 </div>
               </div>
