@@ -13,7 +13,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8
 export const api = {
     getProducts: async (): Promise<Product[]> => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/v1/store/products`)
+            // Use Next.js fetch caching (ISR). Revalidates every 1 hour (3600 seconds)
+            const response = await fetch(`${API_BASE_URL}/api/v1/store/products`, {
+                next: { revalidate: 3600 }
+            })
             if (!response.ok) {
                 throw new Error(`Failed to fetch products: ${response.statusText}`)
             }
