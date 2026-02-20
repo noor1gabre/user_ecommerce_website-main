@@ -111,7 +111,7 @@ export default function Home() {
 
             <Link href="/shop" className="group relative h-64 rounded-2xl overflow-hidden shadow-xl">
               <div className="absolute inset-0 bg-gradient-to-br from-slate-800/80 to-slate-600/40 mix-blend-multiply z-10 transition-opacity duration-300 group-hover:opacity-90" />
-              <img src="/modern_home_office.png" alt="Home Office" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <img src="/modern_home_office.jpeg" alt="Home Office" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-white p-4 text-center">
                 <h3 className="text-2xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">Home Office</h3>
                 <span className="px-4 py-2 border border-white/30 rounded-full text-sm font-medium backdrop-blur-md bg-white/10 transform translate-y-8 opacity-0 transition-all duration-500 delay-100 group-hover:translate-y-0 group-hover:opacity-100">Explore Collection</span>

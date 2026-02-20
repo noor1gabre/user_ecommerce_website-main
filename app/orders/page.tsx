@@ -198,7 +198,7 @@ function OrdersContent() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
             <div className="container mx-auto px-4 py-8">
-                <div className="flex items-center gap-4 mb-8">
+                <div className="flex items-center gap-4 mb-6">
                     <Link
                         href="/profile"
                         className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors group"
@@ -207,6 +207,21 @@ function OrdersContent() {
                         <span>Back to Profile</span>
                     </Link>
                     <h1 className="text-3xl font-bold">My Orders</h1>
+                </div>
+
+                <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-4 mb-8 flex items-start sm:items-center gap-3 text-blue-800">
+                    <MessageCircle className="mt-0.5 sm:mt-0 shrink-0 text-blue-600" size={20} />
+                    <p className="text-sm">
+                        Need to cancel an order? Please contact us on WhatsApp at{" "}
+                        <a
+                            href="https://wa.me/27671004162"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-bold hover:underline"
+                        >
+                            +27 67 100 4162
+                        </a>
+                    </p>
                 </div>
 
                 {error ? (
