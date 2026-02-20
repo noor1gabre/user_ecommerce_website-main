@@ -147,19 +147,6 @@ export default function CheckoutPage() {
     return null
   }
 
-  if (items.length === 0) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-foreground mb-4">Your cart is empty</h1>
-          <Link href="/">
-            <Button className="teal-primary">Continue Shopping</Button>
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
   if (orderSuccess) {
     return (
       <div className="container mx-auto px-4 py-16 flex items-center justify-center min-h-[60vh]">
@@ -198,6 +185,19 @@ export default function CheckoutPage() {
               View My Orders
             </Button>
           )}
+        </div>
+      </div>
+    )
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-foreground mb-4">Your cart is empty</h1>
+          <Link href="/">
+            <Button className="teal-primary">Continue Shopping</Button>
+          </Link>
         </div>
       </div>
     )
